@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TORTILLA FULL MENU</title>
+    <title>TORTILLA FULL MENU | منيو تورتيلا الشامل</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #ffc107; --secondary: #1a1a1a; --discount-color: #e74c3c; }
@@ -35,7 +35,7 @@
 </head>
 <body>
 
-<div id="slow-day" class="banner">✨ عروض بداية الأسبوع الأحد والاثنين ✨</div>
+<div id="slow-day" class="banner">✨ عروض بداية الأسبوع الأحد والاثنين (خصم 2 ريال) ✨</div>
 
 <header>
     <div class="logo-text">TORTILLA <span>& BURGER</span></div>
@@ -55,46 +55,63 @@ let isDiscount = false;
 const d = new Date();
 const day = d.getDay(); 
 
+// تفعيل الخصم التلقائي يومي الأحد والاثنين
 if(day === 0 || day === 1) { 
     isDiscount = true; 
     document.getElementById('slow-day').style.display='block'; 
 }
 
+// روابط صور Unsplash مجربة ومكررة لضمان وجود صورة لكل صنف
+const images = {
+    chicken: "https://images.unsplash.com/photo-1510693223437-12499d3910f1?w=200",
+    beef: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200",
+    meal_s: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200",
+    tortilla_w: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=200",
+    tortilla_r: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=200",
+    arabi: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200",
+    bashka: "https://images.unsplash.com/photo-1512852939750-1305098529bf?w=200",
+    fries: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200",
+    fries_chicken: "https://images.unsplash.com/photo-1562608107-285600021644?w=200",
+    drink_coke: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200",
+    drink_juice: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=200",
+    drink_water: "https://images.unsplash.com/photo-1523362628242-f513a50d2e5d?w=200"
+};
+
 const fullMenu = [
     { cat: "برجر BURGER", items: [
-        { n: "برجر دجاج عادي", p: 8, i: "https://images.unsplash.com/photo-1525059696034-4bd60fcc5e1a?w=200" },
-        { n: "برجر دجاج دبل", p: 14, i: "https://images.unsplash.com/photo-1525059696034-4bd60fcc5e1a?w=200" },
-        { n: "برجر لحم عادي", p: 8, i: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" },
-        { n: "برجر لحم دبل", p: 14, i: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" },
-        { n: "وجبة برجر صغير", p: 12, i: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200" },
-        { n: "وجبة برجر كبير", p: 17, i: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200" }
+        { n: "برجر دجاج عادي", p: 8, i: images.chicken },
+        { n: "برجر دجاج دبل", p: 14, i: images.chicken },
+        { n: "برجر لحم عادي", p: 8, i: images.beef },
+        { n: "برجر لحم دبل", p: 14, i: images.beef },
+        { n: "وجبة برجر صغير", p: 12, i: images.meal_s },
+        { n: "وجبة برجر كبير", p: 17, i: images.meal_s }
     ]},
     { cat: "تورتيلا TORTILLA", items: [
-        { n: "تورتيلا أبيض صغير", p: 6, i: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=200" },
-        { n: "تورتيلا أبيض كبير", p: 8, i: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=200" },
-        { n: "تورتيلا أحمر صغير", p: 7, i: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=200" },
-        { n: "تورتيلا أحمر كبير", p: 10, i: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=200" }
+        { n: "تورتيلا أبيض صغير", p: 6, i: images.tortilla_w },
+        { n: "تورتيلا أبيض كبير", p: 8, i: images.tortilla_w },
+        { n: "تورتيلا أحمر صغير", p: 7, i: images.tortilla_r },
+        { n: "تورتيلا أحمر كبير", p: 10, i: images.tortilla_r }
     ]},
     { cat: "تورتيلا عربي MEALS", items: [
-        { n: "عربي أبيض", p: 18, i: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200" },
-        { n: "عربي أحمر", p: 21, i: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200" }
+        { n: "عربي أبيض", p: 18, i: images.arabi },
+        { n: "عربي أحمر", p: 21, i: images.arabi }
     ]},
     { cat: "باشكا BASHKA", items: [
-        { n: "جامبو موزاريلا", p: 8, i: "https://images.unsplash.com/photo-1512852939750-1305098529bf?w=200" },
-        { n: "باشكا دجاج", p: 15, i: "https://images.unsplash.com/photo-1512852939750-1305098529bf?w=200" }
+        { n: "جامبو موزاريلا", p: 8, i: images.bashka },
+        { n: "باشكا دجاج", p: 15, i: images.bashka }
     ]},
     { cat: "بطاطس FRIES", items: [
-        { n: "بطاطس بالجبن", p: 5, i: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200" },
-        { n: "بطاطس وسط جبن", p: 7, i: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200" },
-        { n: "بطاطس كبير جبن", p: 12, i: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=200" },
-        { n: "بطاطس دجاج صغير", p: 13, i: "https://images.unsplash.com/photo-1562608107-285600021644?w=200" },
-        { n: "بطاطس دجاج كبير", p: 20, i: "https://images.unsplash.com/photo-1562608107-285600021644?w=200" }
+        { n: "بطاطس بالجبن والصوص", p: 5, i: images.fries },
+        { n: "بطاطس وسط جبن وصوص", p: 7, i: images.fries },
+        { n: "بطاطس كبير جبن وصوص", p: 12, i: images.fries },
+        { n: "بطاطس دجاج وجبن (صغير)", p: 13, i: images.fries_chicken },
+        { n: "بطاطس دجاج وجبن (كبير)", p: 20, i: images.fries_chicken }
     ]},
     { cat: "مشروبات DRINKS", items: [
-        { n: "مشروب غازي", p: 2.5, i: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
-        { n: "عصير", p: 2, i: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=200" },
-        { n: "ماء كبير", p: 1, i: "https://images.unsplash.com/photo-1523362628242-f513a50d2e5d?w=200" },
-        { n: "ماء صغير", p: 0.5, i: "https://images.unsplash.com/photo-1523362628242-f513a50d2e5d?w=100" }
+        { n: "مشروب غازي", p: 2.5, i: images.drink_coke },
+        { n: "عصير", p: 2, i: images.drink_juice },
+        { n: "ماء كبير", p: 1, i: images.drink_water },
+        { n: "ماء صغير", p: 0.5, i: images.drink_water } // تكرار صورة الماء
     ]}
 ];
 
@@ -106,8 +123,7 @@ fullMenu.forEach((c, cI) => {
         if (isDiscount && it.p > 3) { finalP = it.p - 2; }
         
         h += `<div class="card ${isDiscount && it.p > 3 ? 'on-sale' : ''}">
-            <img src="${it.i}">
-            <div class="details">
+            <img src="${it.i}"> <div class="details">
                 <h3>${it.n}</h3>
                 <div class="price-box">
                     <span class="old-price" style="${isDiscount && it.p > 3 ? 'display:inline' : ''}">${it.p} ريال</span>
