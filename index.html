@@ -7,16 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #ffc107; --secondary: #1a1a1a; --discount-color: #e74c3c; }
-        body { background: #fdfdfd; color: #333; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 300px; }
+        body { background: #fdfdfd; color: #333; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 450px; }
         .banner { color: white; text-align: center; padding: 12px; font-weight: 900; display: none; font-size: 0.9rem; position: sticky; top: 0; z-index: 2000; background: var(--secondary); border-bottom: 3px solid var(--primary); }
         header { background: var(--secondary); color: white; padding: 25px 15px; text-align: center; border-radius: 0 0 25px 25px; }
         .logo-text { font-size: 1.8rem; font-weight: 900; }
         .logo-text span { color: var(--primary); }
         .cat-title { background: #f4f4f4; padding: 12px 20px; font-weight: 900; margin: 20px 0 10px; border-right: 6px solid var(--primary); font-size: 1.1rem; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 10px; }
-        .card { background: white; border-radius: 15px; border: 1px solid #eee; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .card img { width: 100%; height: 120px; object-fit: cover; display: block; background: #eee; }
-        .details { padding: 10px; text-align: center; }
+        .card { background: white; border-radius: 15px; border: 1px solid #eee; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); display: flex; flex-direction: column; }
+        .card img { width: 100%; height: 110px; object-fit: cover; background: #eee; }
+        .details { padding: 10px; text-align: center; flex-grow: 1; }
         .details h3 { font-size: 0.85rem; margin: 5px 0; min-height: 35px; color: #444; }
         .current-price { color: var(--secondary); font-weight: 900; font-size: 1.1rem; }
         .on-sale .current-price { color: var(--discount-color); }
@@ -24,16 +24,23 @@
         .customize { padding: 5px; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-bottom: 5px; }
         .opt { font-size: 0.6rem; padding: 4px 8px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; background: #fafafa; }
         .opt.selected { background: var(--primary); border-color: var(--primary); font-weight: bold; }
-        .add-btn { background: var(--secondary); color: white; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; border-radius: 0 0 15px 15px; }
+        .add-btn { background: var(--secondary); color: white; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; }
+        
         .footer { position: fixed; bottom: 0; width: 100%; background: white; border-top: 2px solid #eee; padding: 15px; box-sizing: border-box; z-index: 1000; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); }
-        .cart-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #eee; font-size: 0.85rem; }
+        .cart-preview { max-height: 100px; overflow-y: auto; margin-bottom: 10px; font-size: 0.85rem; border-bottom: 1px solid #eee; }
+        .cart-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #eee; }
         .remove-item { color: var(--discount-color); font-weight: bold; cursor: pointer; padding: 0 5px; }
+        
+        .order-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+        select, input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: 'Cairo'; font-size: 0.8rem; outline: none; }
+        .full-width { grid-column: span 2; }
         .main-order-btn { width: 100%; padding: 18px; border-radius: 15px; border: none; background: var(--secondary); color: white; font-size: 1.1rem; font-weight: 900; cursor: pointer; }
+        .loc-msg { font-size: 0.75rem; color: #666; grid-column: span 2; display: none; margin-top: -5px; margin-bottom: 5px;}
     </style>
 </head>
 <body>
 
-<div id="slow-day" class="banner">✨ عروض بداية الأسبوع الأحد والاثنين 2 ✨</div>
+<div id="slow-day" class="banner">✨ عروض بداية الأسبوع الأحد والاثنين ✨</div>
 
 <header>
     <div class="logo-text">TORTILLA <span>& BURGER</span></div>
@@ -42,7 +49,22 @@
 <div id="menu-cont"></div>
 
 <div class="footer">
-    <div id="cart-preview" style="display:none; max-height: 80px; overflow-y: auto; margin-bottom: 10px;"></div>
+    <div id="cart-preview" class="cart-preview" style="display:none;"></div>
+
+    <div class="order-fields">
+        <select id="order-type">
+            <option value="سفري">📦 سفري</option>
+            <option value="محلي">🍽️ محلي</option>
+        </select>
+        <select id="delivery-method" onchange="toggleAddress()">
+            <option value="استلام من الفرع">🏠 استلام من الفرع</option>
+            <option value="توصيل للمنزل">🚗 توصيل للمنزل</option>
+        </select>
+        <input type="text" id="cust-phone" placeholder="رقم الجوال" class="full-width">
+        <input type="text" id="cust-address" placeholder="وصف العنوان (اختياري)" class="full-width" style="display:none;">
+        <div id="loc-tip" class="loc-msg">📌 سيتم طلب إرسال "الموقع الحالي" عبر الواتساب</div>
+    </div>
+
     <button class="main-order-btn" onclick="sendToWA()">تأكيد الطلب | <span id="total">0</span> ريال</button>
 </div>
 
@@ -55,15 +77,28 @@ if(day === 0 || day === 1) {
     document.getElementById('slow-day').style.display='block'; 
 }
 
-// روابط صور مباشرة ومجربة لضمان الظهور
+function toggleAddress() {
+    const method = document.getElementById('delivery-method').value;
+    const addr = document.getElementById('cust-address');
+    const tip = document.getElementById('loc-tip');
+    if(method === 'توصيل للمنزل') {
+        addr.style.display = 'block';
+        tip.style.display = 'block';
+    } else {
+        addr.style.display = 'none';
+        tip.style.display = 'none';
+    }
+}
+
+// روابط صور مباشرة ومجربة
 const imgs = {
-    ck: "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=300", // دجاج
-    bf: "https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=300", // لحم
-    tr_w: "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&w=300", // تورتيلا ابيض
-    tr_r: "https://images.pexels.com/photos/2092906/pexels-photo-2092906.jpeg?auto=compress&cs=tinysrgb&w=300", // تورتيلا احمر
-    fr: "https://images.pexels.com/photos/1893555/pexels-photo-1893555.jpeg?auto=compress&cs=tinysrgb&w=300", // بطاطس
-    dr: "https://images.pexels.com/photos/5059387/pexels-photo-5059387.jpeg?auto=compress&cs=tinysrgb&w=300", // مشروب
-    wt: "https://images.pexels.com/photos/416528/pexels-photo-416528.jpeg?auto=compress&cs=tinysrgb&w=300" // ماء
+    ck: "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=300",
+    bf: "https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=300",
+    tr_w: "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&w=300",
+    tr_r: "https://images.pexels.com/photos/2092906/pexels-photo-2092906.jpeg?auto=compress&cs=tinysrgb&w=300",
+    fr: "https://images.pexels.com/photos/1893555/pexels-photo-1893555.jpeg?auto=compress&cs=tinysrgb&w=300",
+    dr: "https://images.pexels.com/photos/5059387/pexels-photo-5059387.jpeg?auto=compress&cs=tinysrgb&w=300",
+    wt: "https://images.pexels.com/photos/416528/pexels-photo-416528.jpeg?auto=compress&cs=tinysrgb&w=300"
 };
 
 const fullMenu = [
@@ -117,7 +152,10 @@ fullMenu.forEach((c, cI) => {
 function add(n, p, id) {
     let opts = [];
     let el = document.getElementById(id);
-    if(el) el.querySelectorAll('.opt.selected').forEach(o => opts.push(o.innerText));
+    if(el) {
+        el.querySelectorAll('.opt.selected').forEach(o => opts.push(o.innerText));
+        el.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    }
     const itemID = Date.now();
     cart.push({ itemID, n, p, opts });
     render();
@@ -138,7 +176,24 @@ function render() {
 
 function sendToWA() {
     if(!cart.length) return alert("السلة فارغة!");
+    const phone = document.getElementById('cust-phone').value;
+    const type = document.getElementById('order-type').value;
+    const method = document.getElementById('delivery-method').value;
+    const address = document.getElementById('cust-address').value;
+
+    if(!phone) return alert("يرجى إدخال رقم الجوال!");
+
     let txt = `*طلب جديد (تورتيلا بحرة)*%0a%0a`;
+    txt += `*الاستلام:* ${type}%0a`;
+    txt += `*الطريقة:* ${method}%0a`;
+    txt += `*الجوال:* ${phone}%0a`;
+    
+    if(method === 'توصيل للمنزل') {
+        txt += `*العنوان:* ${address || 'لم يتم كتابة وصف'}%0a`;
+        txt += `*تنبيه:* يرجى إرسال اللوكيشن بعد هذه الرسالة 📍%0a`;
+    }
+    
+    txt += `%0a*الطلبات:*%0a`;
     cart.forEach((i, x) => {
         txt += `${x+1}. ${i.n} (${i.p} ر.س)%0a${i.opts.length ? '   - ' + i.opts.join(', ') + '%0a' : ''}`;
     });
