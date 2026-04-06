@@ -3,59 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تورتيلا بحرة | TORTILLA</title>
+    <title>TORTILLA SMART MENU</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #ffc107; --secondary: #1a1a1a; --discount-color: #e74c3c; }
-        body { background-color: #fdfdfd; color: #333; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 450px; }
+        body { background: #fdfdfd; color: #333; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 450px; }
         .banner { color: white; text-align: center; padding: 12px; font-weight: 900; display: none; font-size: 0.9rem; position: sticky; top: 0; z-index: 2000; background: var(--secondary); border-bottom: 3px solid var(--primary); }
-        
-        /* تحسين الهيدر لضمان ظهور الشعار */
-        header { 
-            background: white; 
-            padding: 15px 0; 
-            text-align: center; 
-            border-bottom: 5px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        header img { 
-            width: 85%; 
-            max-width: 350px; 
-            height: auto; 
-            display: block; 
-            margin: 0 auto;
-        }
-
-        .cat-title { background: var(--secondary); color: white; padding: 12px 20px; font-weight: 900; margin: 20px 0 10px; border-right: 6px solid var(--primary); font-size: 1.1rem; }
+        header { background: var(--secondary); color: white; padding: 25px 15px; text-align: center; border-radius: 0 0 25px 25px; }
+        .logo-text { font-size: 1.8rem; font-weight: 900; }
+        .logo-text span { color: var(--primary); }
+        .cat-title { background: #f4f4f4; padding: 12px 20px; font-weight: 900; margin: 20px 0 10px; border-right: 6px solid var(--primary); font-size: 1.1rem; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 10px; }
-        .card { background: white; border-radius: 15px; border: 1px solid #eee; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-        .card img { width: 100%; height: 110px; object-fit: cover; background: #f9f9f9; }
+        .card { background: white; border-radius: 15px; border: 1px solid #eee; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); display: flex; flex-direction: column; }
+        .card img { width: 100%; height: 110px; object-fit: cover; background: #eee; }
         .details { padding: 10px; text-align: center; flex-grow: 1; }
         .details h3 { font-size: 0.85rem; margin: 5px 0; min-height: 35px; color: #444; }
         .current-price { color: var(--secondary); font-weight: 900; font-size: 1.1rem; }
         .on-sale .current-price { color: var(--discount-color); }
         .old-price { text-decoration: line-through; color: #a0a0a0; font-size: 0.8rem; display: none; margin-left: 5px; }
+        .customize { padding: 5px; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-bottom: 5px; }
+        .opt { font-size: 0.6rem; padding: 4px 8px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; background: #fafafa; }
+        .opt.selected { background: var(--primary); border-color: var(--primary); font-weight: bold; }
         .add-btn { background: var(--secondary); color: white; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; }
         
-        .footer { position: fixed; bottom: 0; width: 100%; background: white; border-top: 3px solid var(--primary); padding: 15px; box-sizing: border-box; z-index: 1000; box-shadow: 0 -5px 20px rgba(0,0,0,0.15); }
+        .footer { position: fixed; bottom: 0; width: 100%; background: white; border-top: 2px solid #eee; padding: 15px; box-sizing: border-box; z-index: 1000; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); }
+        .cart-preview { max-height: 100px; overflow-y: auto; margin-bottom: 10px; font-size: 0.85rem; border-bottom: 1px solid #eee; }
+        .cart-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #eee; }
+        .remove-item { color: var(--discount-color); font-weight: bold; cursor: pointer; padding: 0 5px; }
+        
         .order-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-        select, input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-family: 'Cairo'; font-size: 0.85rem; outline: none; }
+        select, input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: 'Cairo'; font-size: 0.8rem; outline: none; }
         .full-width { grid-column: span 2; }
         .main-order-btn { width: 100%; padding: 18px; border-radius: 15px; border: none; background: var(--secondary); color: white; font-size: 1.1rem; font-weight: 900; cursor: pointer; }
+        .loc-msg { font-size: 0.75rem; color: #666; grid-column: span 2; display: none; margin-top: -5px; margin-bottom: 5px;}
     </style>
 </head>
 <body>
 
-<div id="slow-day" class="banner">✨ عروض بداية الأسبوع الأحد والاثنين (خصم 2 ريال) ✨</div>
+<div id="slow-day" class="banner">✨ عروض بداية الأسبوع الأحد والاثنين ✨</div>
 
 <header>
-    <img src="https://i.postimg.cc/mD8Z8f3M/image.png" onerror="this.src='https://raw.githubusercontent.com/itslilblv/gowin/main/logo.png';">
+    <div class="logo-text">TORTILLA <span>& BURGER</span></div>
 </header>
 
 <div id="menu-cont"></div>
 
 <div class="footer">
-    <div id="cart-preview" style="display:none; max-height: 80px; overflow-y: auto; margin-bottom: 10px; font-size: 0.8rem; border-bottom: 1px solid #eee;"></div>
+    <div id="cart-preview" class="cart-preview" style="display:none;"></div>
+
     <div class="order-fields">
         <select id="order-type">
             <option value="سفري">📦 سفري</option>
@@ -66,8 +61,10 @@
             <option value="توصيل للمنزل">🚗 توصيل للمنزل</option>
         </select>
         <input type="text" id="cust-phone" placeholder="رقم الجوال" class="full-width">
-        <input type="text" id="cust-address" placeholder="وصف العنوان" class="full-width" style="display:none;">
+        <input type="text" id="cust-address" placeholder="وصف العنوان (اختياري)" class="full-width" style="display:none;">
+        <div id="loc-tip" class="loc-msg">📌 سيتم طلب إرسال "الموقع الحالي" عبر الواتساب</div>
     </div>
+
     <button class="main-order-btn" onclick="sendToWA()">تأكيد الطلب | <span id="total">0</span> ريال</button>
 </div>
 
@@ -75,13 +72,25 @@
 let cart = [];
 let isDiscount = false;
 const day = new Date().getDay(); 
-if(day === 0 || day === 1) { isDiscount = true; document.getElementById('slow-day').style.display='block'; }
+if(day === 0 || day === 1) { 
+    isDiscount = true; 
+    document.getElementById('slow-day').style.display='block'; 
+}
 
 function toggleAddress() {
     const method = document.getElementById('delivery-method').value;
-    document.getElementById('cust-address').style.display = (method === 'توصيل للمنزل') ? 'block' : 'none';
+    const addr = document.getElementById('cust-address');
+    const tip = document.getElementById('loc-tip');
+    if(method === 'توصيل للمنزل') {
+        addr.style.display = 'block';
+        tip.style.display = 'block';
+    } else {
+        addr.style.display = 'none';
+        tip.style.display = 'none';
+    }
 }
 
+// روابط صور مباشرة ومجربة
 const imgs = {
     ck: "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=300",
     bf: "https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=300",
@@ -95,14 +104,25 @@ const imgs = {
 const fullMenu = [
     { cat: "برجر BURGER", items: [
         { n: "برجر دجاج عادي", p: 8, i: imgs.ck }, { n: "برجر دجاج دبل", p: 14, i: imgs.ck },
-        { n: "برجر لحم عادي", p: 8, i: imgs.bf }, { n: "برجر لحم دبل", p: 14, i: imgs.bf }
+        { n: "برجر لحم عادي", p: 8, i: imgs.bf }, { n: "برجر لحم دبل", p: 14, i: imgs.bf },
+        { n: "وجبة برجر صغير", p: 12, i: imgs.ck }, { n: "وجبة برجر كبير", p: 17, i: imgs.ck }
     ]},
     { cat: "تورتيلا TORTILLA", items: [
         { n: "تورتيلا أبيض صغير", p: 6, i: imgs.tr_w }, { n: "تورتيلا أبيض كبير", p: 8, i: imgs.tr_w },
         { n: "تورتيلا أحمر صغير", p: 7, i: imgs.tr_r }, { n: "تورتيلا أحمر كبير", p: 10, i: imgs.tr_r }
     ]},
-    { cat: "مشروبات وبطاطس", items: [
-        { n: "بطاطس جبن", p: 5, i: imgs.fr }, { n: "مشروب غازي", p: 2.5, i: imgs.dr }
+    { cat: "باشكا وجامبو", items: [
+        { n: "جامبو موزاريلا", p: 8, i: imgs.tr_w }, { n: "باشكا دجاج", p: 15, i: imgs.tr_r },
+        { n: "عربي أبيض", p: 18, i: imgs.tr_w }, { n: "عربي أحمر", p: 21, i: imgs.tr_r }
+    ]},
+    { cat: "بطاطس FRIES", items: [
+        { n: "بطاطس جبن", p: 5, i: imgs.fr }, { n: "بطاطس وسط جبن", p: 7, i: imgs.fr },
+        { n: "بطاطس كبير جبن", p: 12, i: imgs.fr }, { n: "بطاطس دجاج صغير", p: 13, i: imgs.fr },
+        { n: "بطاطس دجاج كبير", p: 20, i: imgs.fr }
+    ]},
+    { cat: "مشروبات DRINKS", items: [
+        { n: "مشروب غازي", p: 2.5, i: imgs.dr }, { n: "عصير", p: 2, i: imgs.dr },
+        { n: "ماء كبير", p: 1, i: imgs.wt }, { n: "ماء صغير", p: 0.5, i: imgs.wt }
     ]}
 ];
 
@@ -110,7 +130,8 @@ const container = document.getElementById('menu-cont');
 fullMenu.forEach((c, cI) => {
     let html = `<div class="cat-title">${c.cat}</div><div class="grid">`;
     c.items.forEach((it, iI) => {
-        let fP = it.p; if (isDiscount && it.p > 3) { fP = it.p - 2; }
+        let fP = it.p;
+        if (isDiscount && it.p > 3) { fP = it.p - 2; }
         html += `<div class="card ${isDiscount && it.p > 3 ? 'on-sale' : ''}">
             <img src="${it.i}">
             <div class="details">
@@ -118,19 +139,39 @@ fullMenu.forEach((c, cI) => {
                 <span class="old-price" style="${isDiscount && it.p > 3 ? 'display:inline' : ''}">${it.p} ريال</span>
                 <span class="current-price">${fP} ريال</span>
             </div>
-            <button class="add-btn" onclick="add('${it.n}', ${fP})">أضف +</button>
+            ${c.cat !== 'مشروبات DRINKS' ? `<div class="customize" id="opt-${cI}-${iI}">
+                <div class="opt" onclick="this.classList.toggle('selected')">بدون مخلل</div>
+                <div class="opt" onclick="this.classList.toggle('selected')">سبايسي</div>
+            </div>` : ''}
+            <button class="add-btn" onclick="add('${it.n}', ${fP}, 'opt-${cI}-${iI}')">أضف +</button>
         </div>`;
     });
     container.innerHTML += html + `</div>`;
 });
 
-function add(n, p) { cart.push({ n, p }); render(); }
+function add(n, p, id) {
+    let opts = [];
+    let el = document.getElementById(id);
+    if(el) {
+        el.querySelectorAll('.opt.selected').forEach(o => opts.push(o.innerText));
+        el.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    }
+    const itemID = Date.now();
+    cart.push({ itemID, n, p, opts });
+    render();
+}
+
+function remove(id) {
+    cart = cart.filter(i => i.itemID !== id);
+    render();
+}
+
 function render() {
     let tot = cart.reduce((s, i) => s + i.p, 0);
     document.getElementById('total').innerText = tot;
     const pre = document.getElementById('cart-preview');
     pre.style.display = cart.length ? 'block' : 'none';
-    pre.innerHTML = cart.map((i, idx) => `<div style="display:flex; justify-content:space-between; padding:2px 0;"><span>${i.n}</span> <span style="color:red; cursor:pointer;" onclick="cart.splice(${idx},1);render();">حذف</span></div>`).join('');
+    pre.innerHTML = cart.map(i => `<div class="cart-item"><span>${i.n}</span><div>${i.p} ر.س <span class="remove-item" onclick="remove(${i.itemID})">×</span></div></div>`).join('');
 }
 
 function sendToWA() {
@@ -138,9 +179,24 @@ function sendToWA() {
     const phone = document.getElementById('cust-phone').value;
     const type = document.getElementById('order-type').value;
     const method = document.getElementById('delivery-method').value;
-    if(!phone) return alert("أدخل رقم الجوال!");
-    let txt = `*طلب جديد من تورتيلا بحرة*%0a%0a*الاستلام:* ${type}%0a*الطريقة:* ${method}%0a*الجوال:* ${phone}%0a%0a*الطلبات:*%0a`;
-    cart.forEach((i, x) => { txt += `${x+1}. ${i.n} (${i.p} ر.س)%0a`; });
+    const address = document.getElementById('cust-address').value;
+
+    if(!phone) return alert("يرجى إدخال رقم الجوال!");
+
+    let txt = `*طلب جديد (تورتيلا بحرة)*%0a%0a`;
+    txt += `*الاستلام:* ${type}%0a`;
+    txt += `*الطريقة:* ${method}%0a`;
+    txt += `*الجوال:* ${phone}%0a`;
+    
+    if(method === 'توصيل للمنزل') {
+        txt += `*العنوان:* ${address || 'لم يتم كتابة وصف'}%0a`;
+        txt += `*تنبيه:* يرجى إرسال اللوكيشن بعد هذه الرسالة 📍%0a`;
+    }
+    
+    txt += `%0a*الطلبات:*%0a`;
+    cart.forEach((i, x) => {
+        txt += `${x+1}. ${i.n} (${i.p} ر.س)%0a${i.opts.length ? '   - ' + i.opts.join(', ') + '%0a' : ''}`;
+    });
     txt += `%0a*الإجمالي: ${document.getElementById('total').innerText} ريال*`;
     window.open(`https://wa.me/966567561985?text=${txt}`);
 }
