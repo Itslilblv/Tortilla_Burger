@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TORTILLA SMART MENU | منيو تورتيلا الشامل</title>
+    <title>TORTILLA SMART MENU | منيو تورتيلا بحرة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #ff6600; --secondary: #222; --bg: #fff; --discount: #e74c3c; }
@@ -27,18 +27,16 @@
         .card img { width: 100%; height: 120px; object-fit: cover; }
         .info { padding: 12px; text-align: center; flex-grow: 1; }
         .info h3 { font-size: 0.9rem; margin: 5px 0; height: 40px; overflow: hidden; color: #444; }
-        .price-container { margin-top: 5px; }
         .old-price { text-decoration: line-through; color: #999; font-size: 0.8rem; display: none; margin-left: 5px; }
         .price { color: var(--primary); font-weight: 900; font-size: 1.1rem; }
-        .add-btn { background: var(--primary); color: #fff; border: none; width: 100%; padding: 12px; font-weight: 900; cursor: pointer; transition: 0.2s; }
-        .add-btn:active { transform: scale(0.95); background: var(--secondary); }
+        .add-btn { background: var(--primary); color: #fff; border: none; width: 100%; padding: 12px; font-weight: 900; cursor: pointer; }
 
         #feedback-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; z-index: 3000; align-items: center; justify-content: center; }
         .modal-content { background: white; padding: 30px; border-radius: 25px; text-align: center; width: 85%; }
         .emoji-btn { font-size: 3rem; cursor: pointer; margin: 0 10px; display: inline-block; transition: 0.3s; }
 
         .footer { position: fixed; bottom: 0; width: 100%; padding: 20px; background: #fff; border-top: 1px solid #eee; z-index: 1001; box-sizing: border-box; }
-        .order-btn { background: var(--secondary); color: #fff; width: 100%; padding: 18px; border-radius: 15px; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .order-btn { background: var(--secondary); color: #fff; width: 100%; padding: 18px; border-radius: 15px; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -48,7 +46,7 @@
 
 <header>
     <div class="logo">TORT<span>ILLA</span></div>
-    <div style="font-size: 0.85rem; color: #777; margin-top: 5px;">فرع بحرة | أطعم تورتيلا وبرجر بالمنطقة</div>
+    <div style="font-size: 0.85rem; color: #777; margin-top: 5px;">فرع بحرة | الطعم الأصلي 🌯</div>
 </header>
 
 <div class="order-type-container">
@@ -70,7 +68,7 @@
             <span class="emoji-btn" onclick="finish('🙂')">🙂</span>
             <span class="emoji-btn" onclick="finish('☹️')">☹️</span>
         </div>
-        <p style="font-size: 0.8rem; color: #888;">تقييمك يساعدنا على التطوير</p>
+        <p style="font-size: 0.8rem; color: #888;">رأيك يهمنا دائماً</p>
     </div>
 </div>
 
@@ -79,7 +77,7 @@ let orderType = "استلام من الفرع 🏃‍♂️";
 let cart = [];
 let isDiscount = false;
 
-// ذكاء الوقت واليوم
+// ذكاء الوقت واليوم (تلقائي)
 const now = new Date();
 const day = now.getDay(); 
 const hour = now.getHours();
@@ -88,27 +86,23 @@ if (day === 0 || day === 1) { // الأحد والإثنين
     isDiscount = true;
     document.getElementById('slow-day-banner').style.display = 'block';
 }
-if (hour >= 16 && hour < 19) { // من 4 عصرًا لـ 7 مساءً
+if (hour >= 16 && hour < 19) { // الساعة السعيدة (4م - 7م)
     isDiscount = true;
     document.getElementById('happy-hour-banner').style.display = 'block';
 }
 
 const menuData = [
-    { cat: "وجبات التورتيلا الشهيرة", items: [
+    { cat: "وجبات التورتيلا", items: [
         { n: "وجبة تورتيلا دجاج", p: 24, dp: 20, img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=300" },
-        { n: "وجبة تورتيلا لحم", p: 27, dp: 23, img: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=300" },
-        { n: "تورتيلا دجاج سبيشل (حراق)", p: 25, dp: 21, img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=300" }
+        { n: "وجبة تورتيلا لحم", p: 27, dp: 23, img: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=300" }
     ]},
     { cat: "قسم البرجر والزنجر", items: [
         { n: "وجبة برجر زنجر سوبر", p: 23, dp: 19, img: "https://images.unsplash.com/photo-1510693223437-12499d3910f1?w=300" },
-        { n: "وجبة برجر لحم كلاسيك", p: 25, dp: 21, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300" },
-        { n: "برجر دجاج مقرمش (ساندوتش)", p: 16, dp: 13, img: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=300" }
+        { n: "وجبة برجر لحم كلاسيك", p: 25, dp: 21, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300" }
     ]},
-    { cat: "الأصناف الجانبية (الأكثر طلباً)", items: [
-        { n: "بطاطس تورتيلا بالجبنة", p: 14, dp: 10, img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300" },
-        { n: "ديناميت تشيكن (بوكس)", p: 20, dp: 16, img: "https://images.unsplash.com/photo-1562608107-285600021644?w=300" },
-        { n: "حلقات بصل (8 قطع)", p: 10, dp: 8, img: "https://images.unsplash.com/photo-1639146175535-99f3630fc552?w=300" },
-        { n: "صوص تورتيلا الخاص", p: 3, dp: 2, img: "https://images.unsplash.com/photo-1470124113129-c2ae476722ec?w=300" }
+    { cat: "الأصناف الجانبية", items: [
+        { n: "بطاطس بالجبنة", p: 14, dp: 10, img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300" },
+        { n: "ديناميت تشيكن", p: 20, dp: 16, img: "https://images.unsplash.com/photo-1562608107-285600021644?w=300" }
     ]}
 ];
 
@@ -159,7 +153,8 @@ function finish(rating) {
     msg += `%0a*الإجمالي: ${total} ريال*%0a`;
     if(orderType.includes('توصيل')) msg += `%0a_يرجى إرسال اللوكيشن_ 📍`;
     
-    window.open(`https://wa.me/966533351332?text=${msg}`);
+    // الرقم الصحيح المحدث 0567561985
+    window.open(`https://wa.me/966567561985?text=${msg}`);
     document.getElementById('feedback-modal').style.display = 'none';
 }
 </script>
