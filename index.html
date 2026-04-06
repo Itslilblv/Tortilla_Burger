@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #ffc107; --secondary: #1a1a1a; --discount-color: #e74c3c; }
-        body { background: #fdfdfd; color: #333; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 250px; }
+        body { background: #fdfdfd; color: #333; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 300px; }
         .banner { color: white; text-align: center; padding: 12px; font-weight: 900; display: none; font-size: 0.9rem; position: sticky; top: 0; z-index: 2000; background: var(--secondary); border-bottom: 3px solid var(--primary); }
         header { background: var(--secondary); color: white; padding: 25px 15px; text-align: center; border-radius: 0 0 25px 25px; }
         .logo-text { font-size: 1.8rem; font-weight: 900; }
@@ -26,13 +26,18 @@
         .opt { font-size: 0.6rem; padding: 3px 6px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; background: #fafafa; }
         .opt.selected { background: var(--primary); border-color: var(--primary); font-weight: bold; }
         .add-btn { background: var(--secondary); color: white; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; }
-        .footer { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #eee; padding: 15px; box-sizing: border-box; z-index: 1000; }
+        
+        /* تصميم السلة الجديد */
+        .footer { position: fixed; bottom: 0; width: 100%; background: white; border-top: 2px solid #eee; padding: 15px; box-sizing: border-box; z-index: 1000; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); }
+        .cart-items-preview { max-height: 100px; overflow-y: auto; margin-bottom: 10px; font-size: 0.85rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px dashed #eee; }
+        .remove-item { color: var(--discount-color); font-weight: 900; cursor: pointer; padding: 0 10px; font-size: 1.1rem; }
         .main-order-btn { width: 100%; padding: 18px; border-radius: 15px; border: none; background: var(--secondary); color: white; font-size: 1.1rem; font-weight: 900; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div id="slow-day" class="banner">✨عروض بداية الأسبوع الأحد والاثنين ✨</div>
+<div id="slow-day" class="banner">🔥عروض بداية الأسبوع الأحد والاثنين ✨</div>
 
 <header>
     <div class="logo-text">TORTILLA <span>& BURGER</span></div>
@@ -42,6 +47,7 @@
 <div id="menu-cont"></div>
 
 <div class="footer">
+    <div id="cart-preview" class="cart-items-preview" style="display:none;"></div>
     <button class="main-order-btn" onclick="sendToWA()">تأكيد الطلب | <span id="total">0</span> ريال</button>
 </div>
 
@@ -49,9 +55,8 @@
 let cart = [];
 let isDiscount = false;
 const d = new Date();
-const day = d.getDay(); // الأحد = 0 ، الاثنين = 1
+const day = d.getDay(); 
 
-// تفعيل الخصم التلقائي يومي الأحد والاثنين
 if(day === 0 || day === 1) { 
     isDiscount = true; 
     document.getElementById('slow-day').style.display='block'; 
@@ -61,22 +66,22 @@ const fullMenu = [
     { cat: "برجر BURGER", items: [
         { n: "برجر دجاج عادي", p: 8 }, { n: "برجر دجاج دبل", p: 14 },
         { n: "برجر لحم عادي", p: 8 }, { n: "برجر لحم دبل", p: 14 },
-        { n: "وجبة برجر لحم/دجاج (صغير)", p: 12 }, { n: "وجبة برجر لحم/دجاج (كبير)", p: 17 }
+        { n: "وجبة برجر صغير", p: 12 }, { n: "وجبة برجر كبير", p: 17 }
     ]},
     { cat: "تورتيلا TORTILLA", items: [
         { n: "تورتيلا أبيض صغير", p: 6 }, { n: "تورتيلا أبيض كبير", p: 8 },
         { n: "تورتيلا أحمر صغير", p: 7 }, { n: "تورتيلا أحمر كبير", p: 10 }
     ]},
     { cat: "تورتيلا عربي MEALS", items: [
-        { n: "تورتيلا عربي أبيض", p: 18 }, { n: "تورتيلا عربي أحمر", p: 21 }
+        { n: "عربي أبيض", p: 18 }, { n: "عربي أحمر", p: 21 }
     ]},
     { cat: "باشكا BASHKA", items: [
-        { n: "جامبو دجاج بالموزاريلا", p: 8 }, { n: "باشكا دجاج", p: 15 }
+        { n: "جامبو موزاريلا", p: 8 }, { n: "باشكا دجاج", p: 15 }
     ]},
     { cat: "بطاطس FRIES", items: [
-        { n: "بطاطس بالجبن والصوص", p: 5 }, { n: "بطاطس وسط بالجبن والصوص", p: 7 },
-        { n: "بطاطس كبير بالجبن والصوص", p: 12 }, { n: "بطاطس دجاج وجبن (صغير)", p: 13 },
-        { n: "بطاطس دجاج وجبن (كبير)", p: 20 }
+        { n: "بطاطس بالجبن", p: 5 }, { n: "بطاطس وسط جبن", p: 7 },
+        { n: "بطاطس كبير جبن", p: 12 }, { n: "بطاطس دجاج (صغير)", p: 13 },
+        { n: "بطاطس دجاج (كبير)", p: 20 }
     ]},
     { cat: "مشروبات DRINKS", items: [
         { n: "مشروب غازي", p: 2.5 }, { n: "عصير", p: 2 },
@@ -88,7 +93,6 @@ const container = document.getElementById('menu-cont');
 fullMenu.forEach((c, cI) => {
     let h = `<div class="cat-title">${c.cat}</div><div class="grid">`;
     c.items.forEach((it, iI) => {
-        // الحسبة البرمجية للخصم: إذا كان يوم عرض وسعر الصنف فوق 3 ريال اخصم ريالين
         let finalP = it.p;
         if (isDiscount && it.p > 3) { finalP = it.p - 2; }
         
@@ -106,31 +110,60 @@ fullMenu.forEach((c, cI) => {
                 <div class="opt" onclick="this.classList.toggle('selected')">بدون شطة</div>
                 <div class="opt" onclick="this.classList.toggle('selected')">سبايسي</div>
             </div>` : ''}
-            <button class="add-btn" onclick="add('${it.n}', ${finalP}, 'opt-${cI}-${iI}')">أضف +</button>
+            <button class="add-btn" onclick="add('${it.n}', ${finalP}, 'opt-${cI}-${iI}')">أضف للطلب +</button>
         </div>`;
     });
     h += `</div>`;
     container.innerHTML += h;
 });
 
-function add(n, p, id) {
-    let sOpts = [];
+function add(name, price, id) {
+    let selectedOpts = [];
     let el = document.getElementById(id);
     if(el) {
-        el.querySelectorAll('.opt.selected').forEach(o => sOpts.push(o.innerText));
+        el.querySelectorAll('.opt.selected').forEach(o => selectedOpts.push(o.innerText));
         el.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
     }
-    cart.push({ n, p, o: sOpts });
-    document.getElementById('total').innerText = cart.reduce((s, i) => s + i.p, 0);
+    // إضافة معرف فريد لكل صنف عشان نحذفه بسهولة
+    const idItem = Date.now();
+    cart.push({ idItem, name, price, opts: selectedOpts });
+    renderCart();
+}
+
+function remove(idItem) {
+    cart = cart.filter(i => i.idItem !== idItem);
+    renderCart();
+}
+
+function renderCart() {
+    let total = cart.reduce((s, i) => s + i.price, 0);
+    document.getElementById('total').innerText = total;
+    
+    const preview = document.getElementById('cart-preview');
+    if(cart.length > 0) {
+        preview.style.display = "block";
+        preview.innerHTML = cart.map(i => `
+            <div class="cart-item">
+                <span>${i.name} ${i.opts.length ? '<small>('+i.opts.join(',')+')</small>' : ''}</span>
+                <div>
+                    <b>${i.price} ر.س</b>
+                    <span class="remove-item" onclick="remove(${i.idItem})">×</span>
+                </div>
+            </div>
+        `).join('');
+    } else {
+        preview.style.display = "none";
+    }
 }
 
 function sendToWA() {
     if(cart.length === 0) return alert("السلة فارغة!");
-    let tot = cart.reduce((s, i) => s + i.p, 0);
+    let tot = cart.reduce((s, i) => s + i.p, 0); // الخطأ هنا كان it.p وصححناه لـ i.price
+    tot = cart.reduce((s, i) => s + i.price, 0);
     let txt = `*طلب جديد (تورتيلا بحرة)*%0a%0a`;
     cart.forEach((i, idx) => {
-        txt += `${idx+1}. ${i.n} (${i.p} ر.س)%0a`;
-        if(i.o.length > 0) txt += `   - ملاحظة: ${i.o.join(', ')}%0a`;
+        txt += `${idx+1}. ${i.name} (${i.price} ر.س)%0a`;
+        if(i.opts.length > 0) txt += `   - ملاحظة: ${i.opts.join(', ')}%0a`;
     });
     txt += `%0a*الإجمالي: ${tot} ريال*`;
     window.open(`https://wa.me/966567561985?text=${txt}`);
