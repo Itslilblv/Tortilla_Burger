@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TORTILLA FULL MENU | منيو تورتيلا الشامل</title>
+    <title>TORTILLA SMART MENU</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #ffc107; --secondary: #1a1a1a; --discount-color: #e74c3c; }
@@ -14,22 +14,20 @@
         .logo-text span { color: var(--primary); }
         .cat-title { background: #f4f4f4; padding: 12px 20px; font-weight: 900; margin: 20px 0 10px; border-right: 6px solid var(--primary); font-size: 1.1rem; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 10px; }
-        .card { background: white; border-radius: 15px; border: 1px solid #eee; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .card img { width: 100%; height: 110px; object-fit: cover; background: #eee; }
-        .details { padding: 10px; text-align: center; flex-grow: 1; }
+        .card { background: white; border-radius: 15px; border: 1px solid #eee; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .card img { width: 100%; height: 120px; object-fit: cover; display: block; background: #eee; }
+        .details { padding: 10px; text-align: center; }
         .details h3 { font-size: 0.85rem; margin: 5px 0; min-height: 35px; color: #444; }
-        .price-box { margin: 8px 0; }
-        .old-price { text-decoration: line-through; color: #a0a0a0; font-size: 0.8rem; margin-left: 5px; display: none; }
         .current-price { color: var(--secondary); font-weight: 900; font-size: 1.1rem; }
         .on-sale .current-price { color: var(--discount-color); }
+        .old-price { text-decoration: line-through; color: #a0a0a0; font-size: 0.8rem; display: none; margin-left: 5px; }
         .customize { padding: 5px; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-bottom: 5px; }
-        .opt { font-size: 0.6rem; padding: 3px 6px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; background: #fafafa; }
+        .opt { font-size: 0.6rem; padding: 4px 8px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; background: #fafafa; }
         .opt.selected { background: var(--primary); border-color: var(--primary); font-weight: bold; }
-        .add-btn { background: var(--secondary); color: white; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; }
+        .add-btn { background: var(--secondary); color: white; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; border-radius: 0 0 15px 15px; }
         .footer { position: fixed; bottom: 0; width: 100%; background: white; border-top: 2px solid #eee; padding: 15px; box-sizing: border-box; z-index: 1000; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); }
-        .cart-items-preview { max-height: 100px; overflow-y: auto; margin-bottom: 10px; font-size: 0.85rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px dashed #eee; }
-        .remove-item { color: var(--discount-color); font-weight: 900; cursor: pointer; padding: 0 10px; font-size: 1.1rem; }
+        .cart-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #eee; font-size: 0.85rem; }
+        .remove-item { color: var(--discount-color); font-weight: bold; cursor: pointer; padding: 0 5px; }
         .main-order-btn { width: 100%; padding: 18px; border-radius: 15px; border: none; background: var(--secondary); color: white; font-size: 1.1rem; font-weight: 900; cursor: pointer; }
     </style>
 </head>
@@ -39,149 +37,112 @@
 
 <header>
     <div class="logo-text">TORTILLA <span>& BURGER</span></div>
-    <div style="font-size: 0.8rem; opacity: 0.8;">قائمة بحرة الشاملة 🌯</div>
 </header>
 
 <div id="menu-cont"></div>
 
 <div class="footer">
-    <div id="cart-preview" class="cart-items-preview" style="display:none;"></div>
+    <div id="cart-preview" style="display:none; max-height: 80px; overflow-y: auto; margin-bottom: 10px;"></div>
     <button class="main-order-btn" onclick="sendToWA()">تأكيد الطلب | <span id="total">0</span> ريال</button>
 </div>
 
 <script>
 let cart = [];
 let isDiscount = false;
-const d = new Date();
-const day = d.getDay(); 
-
-// تفعيل الخصم التلقائي يومي الأحد والاثنين
+const day = new Date().getDay(); 
 if(day === 0 || day === 1) { 
     isDiscount = true; 
     document.getElementById('slow-day').style.display='block'; 
 }
 
-// روابط صور Unsplash مجربة ومكررة لضمان وجود صورة لكل صنف
-const images = {
-    chicken: "https://images.unsplash.com/photo-1510693223437-12499d3910f1?w=200",
-    beef: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200",
-    meal_s: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200",
-    tortilla_w: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=200",
-    tortilla_r: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=200",
-    arabi: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200",
-    bashka: "https://images.unsplash.com/photo-1512852939750-1305098529bf?w=200",
-    fries: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200",
-    fries_chicken: "https://images.unsplash.com/photo-1562608107-285600021644?w=200",
-    drink_coke: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200",
-    drink_juice: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=200",
-    drink_water: "https://images.unsplash.com/photo-1523362628242-f513a50d2e5d?w=200"
+// روابط صور مباشرة ومجربة لضمان الظهور
+const imgs = {
+    ck: "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=300", // دجاج
+    bf: "https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=300", // لحم
+    tr_w: "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&w=300", // تورتيلا ابيض
+    tr_r: "https://images.pexels.com/photos/2092906/pexels-photo-2092906.jpeg?auto=compress&cs=tinysrgb&w=300", // تورتيلا احمر
+    fr: "https://images.pexels.com/photos/1893555/pexels-photo-1893555.jpeg?auto=compress&cs=tinysrgb&w=300", // بطاطس
+    dr: "https://images.pexels.com/photos/5059387/pexels-photo-5059387.jpeg?auto=compress&cs=tinysrgb&w=300", // مشروب
+    wt: "https://images.pexels.com/photos/416528/pexels-photo-416528.jpeg?auto=compress&cs=tinysrgb&w=300" // ماء
 };
 
 const fullMenu = [
     { cat: "برجر BURGER", items: [
-        { n: "برجر دجاج عادي", p: 8, i: images.chicken },
-        { n: "برجر دجاج دبل", p: 14, i: images.chicken },
-        { n: "برجر لحم عادي", p: 8, i: images.beef },
-        { n: "برجر لحم دبل", p: 14, i: images.beef },
-        { n: "وجبة برجر صغير", p: 12, i: images.meal_s },
-        { n: "وجبة برجر كبير", p: 17, i: images.meal_s }
+        { n: "برجر دجاج عادي", p: 8, i: imgs.ck }, { n: "برجر دجاج دبل", p: 14, i: imgs.ck },
+        { n: "برجر لحم عادي", p: 8, i: imgs.bf }, { n: "برجر لحم دبل", p: 14, i: imgs.bf },
+        { n: "وجبة برجر صغير", p: 12, i: imgs.ck }, { n: "وجبة برجر كبير", p: 17, i: imgs.ck }
     ]},
     { cat: "تورتيلا TORTILLA", items: [
-        { n: "تورتيلا أبيض صغير", p: 6, i: images.tortilla_w },
-        { n: "تورتيلا أبيض كبير", p: 8, i: images.tortilla_w },
-        { n: "تورتيلا أحمر صغير", p: 7, i: images.tortilla_r },
-        { n: "تورتيلا أحمر كبير", p: 10, i: images.tortilla_r }
+        { n: "تورتيلا أبيض صغير", p: 6, i: imgs.tr_w }, { n: "تورتيلا أبيض كبير", p: 8, i: imgs.tr_w },
+        { n: "تورتيلا أحمر صغير", p: 7, i: imgs.tr_r }, { n: "تورتيلا أحمر كبير", p: 10, i: imgs.tr_r }
     ]},
-    { cat: "تورتيلا عربي MEALS", items: [
-        { n: "عربي أبيض", p: 18, i: images.arabi },
-        { n: "عربي أحمر", p: 21, i: images.arabi }
-    ]},
-    { cat: "باشكا BASHKA", items: [
-        { n: "جامبو موزاريلا", p: 8, i: images.bashka },
-        { n: "باشكا دجاج", p: 15, i: images.bashka }
+    { cat: "باشكا وجامبو", items: [
+        { n: "جامبو موزاريلا", p: 8, i: imgs.tr_w }, { n: "باشكا دجاج", p: 15, i: imgs.tr_r },
+        { n: "عربي أبيض", p: 18, i: imgs.tr_w }, { n: "عربي أحمر", p: 21, i: imgs.tr_r }
     ]},
     { cat: "بطاطس FRIES", items: [
-        { n: "بطاطس بالجبن والصوص", p: 5, i: images.fries },
-        { n: "بطاطس وسط جبن وصوص", p: 7, i: images.fries },
-        { n: "بطاطس كبير جبن وصوص", p: 12, i: images.fries },
-        { n: "بطاطس دجاج وجبن (صغير)", p: 13, i: images.fries_chicken },
-        { n: "بطاطس دجاج وجبن (كبير)", p: 20, i: images.fries_chicken }
+        { n: "بطاطس جبن", p: 5, i: imgs.fr }, { n: "بطاطس وسط جبن", p: 7, i: imgs.fr },
+        { n: "بطاطس كبير جبن", p: 12, i: imgs.fr }, { n: "بطاطس دجاج صغير", p: 13, i: imgs.fr },
+        { n: "بطاطس دجاج كبير", p: 20, i: imgs.fr }
     ]},
     { cat: "مشروبات DRINKS", items: [
-        { n: "مشروب غازي", p: 2.5, i: images.drink_coke },
-        { n: "عصير", p: 2, i: images.drink_juice },
-        { n: "ماء كبير", p: 1, i: images.drink_water },
-        { n: "ماء صغير", p: 0.5, i: images.drink_water } // تكرار صورة الماء
+        { n: "مشروب غازي", p: 2.5, i: imgs.dr }, { n: "عصير", p: 2, i: imgs.dr },
+        { n: "ماء كبير", p: 1, i: imgs.wt }, { n: "ماء صغير", p: 0.5, i: imgs.wt }
     ]}
 ];
 
 const container = document.getElementById('menu-cont');
 fullMenu.forEach((c, cI) => {
-    let h = `<div class="cat-title">${c.cat}</div><div class="grid">`;
+    let html = `<div class="cat-title">${c.cat}</div><div class="grid">`;
     c.items.forEach((it, iI) => {
-        let finalP = it.p;
-        if (isDiscount && it.p > 3) { finalP = it.p - 2; }
-        
-        h += `<div class="card ${isDiscount && it.p > 3 ? 'on-sale' : ''}">
-            <img src="${it.i}"> <div class="details">
+        let fP = it.p;
+        if (isDiscount && it.p > 3) { fP = it.p - 2; }
+        html += `<div class="card ${isDiscount && it.p > 3 ? 'on-sale' : ''}">
+            <img src="${it.i}">
+            <div class="details">
                 <h3>${it.n}</h3>
-                <div class="price-box">
-                    <span class="old-price" style="${isDiscount && it.p > 3 ? 'display:inline' : ''}">${it.p} ريال</span>
-                    <span class="current-price">${finalP} ريال</span>
-                </div>
+                <span class="old-price" style="${isDiscount && it.p > 3 ? 'display:inline' : ''}">${it.p} ريال</span>
+                <span class="current-price">${fP} ريال</span>
             </div>
             ${c.cat !== 'مشروبات DRINKS' ? `<div class="customize" id="opt-${cI}-${iI}">
                 <div class="opt" onclick="this.classList.toggle('selected')">بدون مخلل</div>
-                <div class="opt" onclick="this.classList.toggle('selected')">بدون شطة</div>
                 <div class="opt" onclick="this.classList.toggle('selected')">سبايسي</div>
             </div>` : ''}
-            <button class="add-btn" onclick="add('${it.n}', ${finalP}, 'opt-${cI}-${iI}')">أضف للطلب +</button>
+            <button class="add-btn" onclick="add('${it.n}', ${fP}, 'opt-${cI}-${iI}')">أضف +</button>
         </div>`;
     });
-    h += `</div>`;
-    container.innerHTML += h;
+    container.innerHTML += html + `</div>`;
 });
 
-function add(name, price, id) {
-    let selectedOpts = [];
+function add(n, p, id) {
+    let opts = [];
     let el = document.getElementById(id);
-    if(el) {
-        el.querySelectorAll('.opt.selected').forEach(o => selectedOpts.push(o.innerText));
-        el.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
-    }
-    const idItem = Date.now();
-    cart.push({ idItem, name, price, opts: selectedOpts });
-    renderCart();
+    if(el) el.querySelectorAll('.opt.selected').forEach(o => opts.push(o.innerText));
+    const itemID = Date.now();
+    cart.push({ itemID, n, p, opts });
+    render();
 }
 
-function remove(idItem) {
-    cart = cart.filter(i => i.idItem !== idItem);
-    renderCart();
+function remove(id) {
+    cart = cart.filter(i => i.itemID !== id);
+    render();
 }
 
-function renderCart() {
-    let total = cart.reduce((s, i) => s + i.price, 0);
-    document.getElementById('total').innerText = total;
-    const preview = document.getElementById('cart-preview');
-    if(cart.length > 0) {
-        preview.style.display = "block";
-        preview.innerHTML = cart.map(i => `
-            <div class="cart-item">
-                <span>${i.name}</span>
-                <div><b>${i.price} ر.س</b> <span class="remove-item" onclick="remove(${i.idItem})">×</span></div>
-            </div>`).join('');
-    } else { preview.style.display = "none"; }
+function render() {
+    let tot = cart.reduce((s, i) => s + i.p, 0);
+    document.getElementById('total').innerText = tot;
+    const pre = document.getElementById('cart-preview');
+    pre.style.display = cart.length ? 'block' : 'none';
+    pre.innerHTML = cart.map(i => `<div class="cart-item"><span>${i.n}</span><div>${i.p} ر.س <span class="remove-item" onclick="remove(${i.itemID})">×</span></div></div>`).join('');
 }
 
 function sendToWA() {
-    if(cart.length === 0) return alert("السلة فارغة!");
-    let tot = cart.reduce((s, i) => s + i.price, 0);
+    if(!cart.length) return alert("السلة فارغة!");
     let txt = `*طلب جديد (تورتيلا بحرة)*%0a%0a`;
-    cart.forEach((i, idx) => {
-        txt += `${idx+1}. ${i.name} (${i.price} ر.س)%0a`;
-        if(i.opts.length > 0) txt += `   - ملاحظة: ${i.opts.join(', ')}%0a`;
+    cart.forEach((i, x) => {
+        txt += `${x+1}. ${i.n} (${i.p} ر.س)%0a${i.opts.length ? '   - ' + i.opts.join(', ') + '%0a' : ''}`;
     });
-    txt += `%0a*الإجمالي: ${tot} ريال*`;
+    txt += `%0a*الإجمالي: ${document.getElementById('total').innerText} ريال*`;
     window.open(`https://wa.me/966567561985?text=${txt}`);
 }
 </script>
