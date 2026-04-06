@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TORTILLA SMART MENU | منيو تورتيلا بحرة</title>
+    <title>TORTILLA FULL MENU</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #ffc107; --secondary: #1a1a1a; --discount-color: #e74c3c; }
@@ -15,7 +15,7 @@
         .cat-title { background: #f4f4f4; padding: 12px 20px; font-weight: 900; margin: 20px 0 10px; border-right: 6px solid var(--primary); font-size: 1.1rem; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 10px; }
         .card { background: white; border-radius: 15px; border: 1px solid #eee; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .card img { width: 100%; height: 110px; object-fit: cover; }
+        .card img { width: 100%; height: 110px; object-fit: cover; background: #eee; }
         .details { padding: 10px; text-align: center; flex-grow: 1; }
         .details h3 { font-size: 0.85rem; margin: 5px 0; min-height: 35px; color: #444; }
         .price-box { margin: 8px 0; }
@@ -60,42 +60,41 @@ if(day === 0 || day === 1) {
     document.getElementById('slow-day').style.display='block'; 
 }
 
-// المنيو الكامل مع روابط صور جديدة ومحددة لكل الأصناف
 const fullMenu = [
     { cat: "برجر BURGER", items: [
-        { n: "برجر دجاج عادي", p: 8, img: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=300" },
-        { n: "برجر دجاج دبل", p: 14, img: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=400" },
-        { n: "برجر لحم عادي", p: 8, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300" },
-        { n: "برجر لحم دبل", p: 14, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400" },
-        { n: "وجبة برجر صغير", p: 12, img: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=300" },
-        { n: "وجبة برجر كبير", p: 17, img: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400" }
+        { n: "برجر دجاج عادي", p: 8, i: "https://images.unsplash.com/photo-1525059696034-4bd60fcc5e1a?w=200" },
+        { n: "برجر دجاج دبل", p: 14, i: "https://images.unsplash.com/photo-1525059696034-4bd60fcc5e1a?w=200" },
+        { n: "برجر لحم عادي", p: 8, i: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" },
+        { n: "برجر لحم دبل", p: 14, i: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" },
+        { n: "وجبة برجر صغير", p: 12, i: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200" },
+        { n: "وجبة برجر كبير", p: 17, i: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200" }
     ]},
     { cat: "تورتيلا TORTILLA", items: [
-        { n: "تورتيلا أبيض صغير", p: 6, img: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=300" },
-        { n: "تورتيلا أبيض كبير", p: 8, img: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=400" },
-        { n: "تورتيلا أحمر صغير", p: 7, img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=300" }, 
-        { n: "تورتيلا أحمر كبير", p: 10, img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400" }
+        { n: "تورتيلا أبيض صغير", p: 6, i: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=200" },
+        { n: "تورتيلا أبيض كبير", p: 8, i: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=200" },
+        { n: "تورتيلا أحمر صغير", p: 7, i: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=200" },
+        { n: "تورتيلا أحمر كبير", p: 10, i: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=200" }
     ]},
     { cat: "تورتيلا عربي MEALS", items: [
-        { n: "عربي أبيض", p: 18, img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300" },
-        { n: "عربي أحمر", p: 21, img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400" }
+        { n: "عربي أبيض", p: 18, i: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200" },
+        { n: "عربي أحمر", p: 21, i: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200" }
     ]},
     { cat: "باشكا BASHKA", items: [
-        { n: "جامبو موزاريلا", p: 8, img: "https://images.unsplash.com/photo-1512852939750-1305098529bf?w=300" }, // صورة ستيك دجاج بالجبن
-        { n: "باشكا دجاج", p: 15, img: "https://images.unsplash.com/photo-1512852939750-1305098529bf?w=400" }
+        { n: "جامبو موزاريلا", p: 8, i: "https://images.unsplash.com/photo-1512852939750-1305098529bf?w=200" },
+        { n: "باشكا دجاج", p: 15, i: "https://images.unsplash.com/photo-1512852939750-1305098529bf?w=200" }
     ]},
     { cat: "بطاطس FRIES", items: [
-        { n: "بطاطس بالجبن", p: 5, img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300" },
-        { n: "بطاطس وسط جبن", p: 7, img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400" },
-        { n: "بطاطس كبير جبن", p: 12, img: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=400" },
-        { n: "بطاطس دجاج (صغير)", p: 13, img: "https://images.unsplash.com/photo-1562608107-285600021644?w=300" },
-        { n: "بطاطس دجاج (كبير)", p: 20, img: "https://images.unsplash.com/photo-1562608107-285600021644?w=400" }
+        { n: "بطاطس بالجبن", p: 5, i: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200" },
+        { n: "بطاطس وسط جبن", p: 7, i: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200" },
+        { n: "بطاطس كبير جبن", p: 12, i: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=200" },
+        { n: "بطاطس دجاج صغير", p: 13, i: "https://images.unsplash.com/photo-1562608107-285600021644?w=200" },
+        { n: "بطاطس دجاج كبير", p: 20, i: "https://images.unsplash.com/photo-1562608107-285600021644?w=200" }
     ]},
     { cat: "مشروبات DRINKS", items: [
-        { n: "مشروب غازي", p: 2.5, img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
-        { n: "عصير", p: 2, img: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=200" }, // عصير طبيعي منعش
-        { n: "ماء كبير", p: 1, img: "https://images.unsplash.com/photo-1563200155-24155b40d6c4?w=200" }, // زجاجة ماء معدنية
-        { n: "ماء صغير", p: 0.5, img: "https://images.unsplash.com/photo-1563200155-24155b40d6c4?w=100" }
+        { n: "مشروب غازي", p: 2.5, i: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
+        { n: "عصير", p: 2, i: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=200" },
+        { n: "ماء كبير", p: 1, i: "https://images.unsplash.com/photo-1523362628242-f513a50d2e5d?w=200" },
+        { n: "ماء صغير", p: 0.5, i: "https://images.unsplash.com/photo-1523362628242-f513a50d2e5d?w=100" }
     ]}
 ];
 
@@ -107,7 +106,8 @@ fullMenu.forEach((c, cI) => {
         if (isDiscount && it.p > 3) { finalP = it.p - 2; }
         
         h += `<div class="card ${isDiscount && it.p > 3 ? 'on-sale' : ''}">
-            <img src="${it.img}"> <div class="details">
+            <img src="${it.i}">
+            <div class="details">
                 <h3>${it.n}</h3>
                 <div class="price-box">
                     <span class="old-price" style="${isDiscount && it.p > 3 ? 'display:inline' : ''}">${it.p} ريال</span>
@@ -146,22 +146,15 @@ function remove(idItem) {
 function renderCart() {
     let total = cart.reduce((s, i) => s + i.price, 0);
     document.getElementById('total').innerText = total;
-    
     const preview = document.getElementById('cart-preview');
     if(cart.length > 0) {
         preview.style.display = "block";
         preview.innerHTML = cart.map(i => `
             <div class="cart-item">
-                <span>${i.name} ${i.opts.length ? '<small>('+i.opts.join(',')+')</small>' : ''}</span>
-                <div>
-                    <b>${i.price} ر.س</b>
-                    <span class="remove-item" onclick="remove(${i.idItem})">×</span>
-                </div>
-            </div>
-        `).join('');
-    } else {
-        preview.style.display = "none";
-    }
+                <span>${i.name}</span>
+                <div><b>${i.price} ر.س</b> <span class="remove-item" onclick="remove(${i.idItem})">×</span></div>
+            </div>`).join('');
+    } else { preview.style.display = "none"; }
 }
 
 function sendToWA() {
