@@ -15,7 +15,7 @@
         .cat-title { background: #f4f4f4; padding: 12px 20px; font-weight: 900; margin: 20px 0 10px; border-right: 6px solid var(--primary); font-size: 1.1rem; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 10px; }
         .card { background: white; border-radius: 15px; border: 1px solid #eee; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .card img { width: 100%; height: 110px; object-fit: cover; } /* تم تعديل الطول قليلاً */
+        .card img { width: 100%; height: 110px; object-fit: cover; }
         .details { padding: 10px; text-align: center; flex-grow: 1; }
         .details h3 { font-size: 0.85rem; margin: 5px 0; min-height: 35px; color: #444; }
         .price-box { margin: 8px 0; }
@@ -60,7 +60,7 @@ if(day === 0 || day === 1) {
     document.getElementById('slow-day').style.display='block'; 
 }
 
-// المنيو الكامل مع روابط صور محسنة وجديدة
+// المنيو الكامل مع روابط صور جديدة ومحددة لكل الأصناف
 const fullMenu = [
     { cat: "برجر BURGER", items: [
         { n: "برجر دجاج عادي", p: 8, img: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=300" },
@@ -73,7 +73,7 @@ const fullMenu = [
     { cat: "تورتيلا TORTILLA", items: [
         { n: "تورتيلا أبيض صغير", p: 6, img: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=300" },
         { n: "تورتيلا أبيض كبير", p: 8, img: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=400" },
-        { n: "تورتيلا أحمر صغير", p: 7, img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=300" }, // صورة تورتيلا حمراء
+        { n: "تورتيلا أحمر صغير", p: 7, img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=300" }, 
         { n: "تورتيلا أحمر كبير", p: 10, img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400" }
     ]},
     { cat: "تورتيلا عربي MEALS", items: [
@@ -81,21 +81,21 @@ const fullMenu = [
         { n: "عربي أحمر", p: 21, img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400" }
     ]},
     { cat: "باشكا BASHKA", items: [
-        { n: "جامبو موزاريلا", p: 8, img: "https://images.unsplash.com/photo-1539252554452-4411ba092fc5?w=300" },
-        { n: "باشكا دجاج", p: 15, img: "https://images.unsplash.com/photo-1539252554452-4411ba092fc5?w=400" }
+        { n: "جامبو موزاريلا", p: 8, img: "https://images.unsplash.com/photo-1512852939750-1305098529bf?w=300" }, // صورة ستيك دجاج بالجبن
+        { n: "باشكا دجاج", p: 15, img: "https://images.unsplash.com/photo-1512852939750-1305098529bf?w=400" }
     ]},
     { cat: "بطاطس FRIES", items: [
         { n: "بطاطس بالجبن", p: 5, img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300" },
         { n: "بطاطس وسط جبن", p: 7, img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400" },
-        { n: "بطاطس كبير جبن", p: 12, dp: 10, img: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=400" },
+        { n: "بطاطس كبير جبن", p: 12, img: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=400" },
         { n: "بطاطس دجاج (صغير)", p: 13, img: "https://images.unsplash.com/photo-1562608107-285600021644?w=300" },
         { n: "بطاطس دجاج (كبير)", p: 20, img: "https://images.unsplash.com/photo-1562608107-285600021644?w=400" }
     ]},
     { cat: "مشروبات DRINKS", items: [
         { n: "مشروب غازي", p: 2.5, img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
-        { n: "عصير", p: 2, img: "https://images.unsplash.com/photo-1613478223719-2ab80260f423?w=200" },
-        { n: "ماء كبير", p: 1, img: "https://images.unsplash.com/photo-1548839140-29a74ea07ad5?w=200" },
-        { n: "ماء صغير", p: 0.5, img: "https://images.unsplash.com/photo-1548839140-29a74ea07ad5?w=100" }
+        { n: "عصير", p: 2, img: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=200" }, // عصير طبيعي منعش
+        { n: "ماء كبير", p: 1, img: "https://images.unsplash.com/photo-1563200155-24155b40d6c4?w=200" }, // زجاجة ماء معدنية
+        { n: "ماء صغير", p: 0.5, img: "https://images.unsplash.com/photo-1563200155-24155b40d6c4?w=100" }
     ]}
 ];
 
