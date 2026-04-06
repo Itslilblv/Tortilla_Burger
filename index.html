@@ -3,64 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TORTILLA | منيو العروض الذكي</title>
+    <title>TORTILLA FULL MENU | منيو تورتيلا الكامل</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #ffc107; --secondary: #1a1a1a; --discount-color: #e74c3c; }
         body { background: #fdfdfd; color: #333; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 250px; }
-        
         .banner { color: white; text-align: center; padding: 10px; font-weight: 900; display: none; font-size: 0.8rem; position: sticky; top: 0; z-index: 2000; }
         #slow-day { background: var(--secondary); border-bottom: 3px solid var(--primary); }
         #happy-hour { background: var(--discount-color); }
-
         header { background: var(--secondary); color: white; padding: 25px 15px; text-align: center; border-radius: 0 0 25px 25px; }
         .logo-text { font-size: 1.8rem; font-weight: 900; }
         .logo-text span { color: var(--primary); }
-
-        .cat-title { background: #f4f4f4; padding: 12px 20px; font-weight: 900; margin: 20px 0 10px; border-right: 6px solid var(--primary); }
+        .cat-title { background: #f4f4f4; padding: 12px 20px; font-weight: 900; margin: 20px 0 10px; border-right: 6px solid var(--primary); font-size: 1.1rem; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 12px; }
         .card { background: white; border-radius: 15px; border: 1px solid #eee; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .card img { width: 100%; height: 110px; object-fit: cover; }
-        
-        .details { padding: 12px; text-align: center; flex-grow: 1; }
-        .details h3 { font-size: 0.85rem; margin: 5px 0; min-height: 35px; color: #444; }
-        
-        /* تنسيق الأسعار المطور */
-        .price-box { margin: 8px 0; }
-        .old-price { 
-            text-decoration: line-through; 
-            color: #a0a0a0; 
-            font-size: 0.85rem; 
-            margin-left: 8px; 
-            display: none; /* مخفي افتراضياً ويظهر وقت الخصم */
-        }
-        .current-price { 
-            color: var(--secondary); 
-            font-weight: 900; 
-            font-size: 1.1rem; 
-        }
-        .on-sale .current-price { 
-            color: var(--discount-color); /* السعر الجديد يصير أحمر وقت الخصم */
-        }
-
+        .card img { width: 100%; height: 100px; object-fit: cover; }
+        .details { padding: 10px; text-align: center; flex-grow: 1; }
+        .details h3 { font-size: 0.85rem; margin: 5px 0; min-height: 35px; }
+        .old-price { text-decoration: line-through; color: #a0a0a0; font-size: 0.8rem; margin-left: 5px; display: none; }
+        .current-price { color: var(--secondary); font-weight: 900; font-size: 1.1rem; }
+        .on-sale .current-price { color: var(--discount-color); }
         .customize { padding: 5px; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-bottom: 5px; }
         .opt { font-size: 0.6rem; padding: 3px 6px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; background: #fafafa; }
         .opt.selected { background: var(--primary); border-color: var(--primary); font-weight: bold; }
-
         .add-btn { background: var(--secondary); color: white; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; }
-        
         .footer { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #eee; padding: 15px; box-sizing: border-box; z-index: 1000; }
         .main-order-btn { width: 100%; padding: 18px; border-radius: 15px; border: none; background: var(--secondary); color: white; font-size: 1.1rem; font-weight: 900; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div id="slow-day" class="banner">✨ عروض بداية الأسبوع (الأحد والإثنين) مفعّلة الآن ✨</div>
-<div id="happy-hour" class="banner">🕒 مفعّل الآن: عرض الساعة السعيدة (4م - 7م) 🕒</div>
+<div id="slow-day" class="banner">✨ عروض بداية الأسبوع (خصم 2 ريال على الوجبات) ✨</div>
+<div id="happy-hour" class="banner">🕒 عرض الساعة السعيدة مفعّل الآن 🕒</div>
 
 <header>
     <div class="logo-text">TORTILLA <span>& BURGER</span></div>
-    <div style="font-size: 0.8rem; opacity: 0.8;">منيو بحرة الذكي 🌯</div>
+    <div style="font-size: 0.8rem; opacity: 0.8;">قائمة بحرة الشاملة 🌯</div>
 </header>
 
 <div id="menu-cont"></div>
@@ -71,62 +49,64 @@
 
 <script>
 let cart = [];
-let isDiscountActive = false;
-
-// ذكاء الوقت واليوم
+let isDiscount = false;
 const d = new Date();
 const day = d.getDay(); 
 const hr = d.getHours();
 
-// تفعيل الخصم (الأحد 0، الإثنين 1، أو وقت العصر)
-if(day === 0 || day === 1) { 
-    isDiscountActive = true; 
-    document.getElementById('slow-day').style.display='block'; 
-}
-if(hr >= 16 && hr < 19) { 
-    isDiscountActive = true; 
-    document.getElementById('happy-hour').style.display='block'; 
-}
+if(day === 0 || day === 1) { isDiscount = true; document.getElementById('slow-day').style.display='block'; }
+if(hr >= 16 && hr < 19) { isDiscount = true; document.getElementById('happy-hour').style.display='block'; }
 
-const menu = [
+const fullMenu = [
     { cat: "برجر BURGER", items: [
-        { n: "برجر دجاج عادي", p: 8, dp: 7 },
-        { n: "برجر دجاج دبل", p: 14, dp: 12 },
-        { n: "وجبة برجر صغير", p: 12, dp: 10 },
-        { n: "وجبة برجر كبير", p: 17, dp: 15 }
+        { n: "برجر دجاج عادي", p: 8 }, { n: "برجر دجاج دبل", p: 14 },
+        { n: "برجر لحم عادي", p: 8 }, { n: "برجر لحم دبل", p: 14 },
+        { n: "وجبة برجر لحم/دجاج (صغير)", p: 12 }, { n: "وجبة برجر لحم/دجاج (كبير)", p: 17 }
     ]},
     { cat: "تورتيلا TORTILLA", items: [
-        { n: "تورتيلا أبيض صغير", p: 6, dp: 5 },
-        { n: "تورتيلا أبيض كبير", p: 8, dp: 7 },
-        { n: "تورتيلا أحمر صغير", p: 7, dp: 6 },
-        { n: "تورتيلا أحمر كبير", p: 10, dp: 8 }
+        { n: "تورتيلا أبيض صغير", p: 6 }, { n: "تورتيلا أبيض كبير", p: 8 },
+        { n: "تورتيلا أحمر صغير", p: 7 }, { n: "تورتيلا أحمر كبير", p: 10 }
+    ]},
+    { cat: "تورتيلا عربي MEALS", items: [
+        { n: "تورتيلا عربي أبيض", p: 18 }, { n: "تورتيلا عربي أحمر", p: 21 }
+    ]},
+    { cat: "باشكا BASHKA", items: [
+        { n: "جامبو دجاج بالموزاريلا", p: 8 }, { n: "باشكا دجاج", p: 15 }
     ]},
     { cat: "بطاطس FRIES", items: [
-        { n: "بطاطس بالجبن والصوص", p: 5, dp: 4 },
-        { n: "بطاطس وسط بالجبن", p: 7, dp: 6 },
-        { n: "بطاطس دجاج وجبن (كبير)", p: 20, dp: 17 }
+        { n: "بطاطس بالجبن والصوص", p: 5 }, { n: "بطاطس وسط بالجبن والصوص", p: 7 },
+        { n: "بطاطس كبير بالجبن والصوص", p: 12 }, { n: "بطاطس دجاج وجبن (صغير)", p: 13 },
+        { n: "بطاطس دجاج وجبن (كبير)", p: 20 }
+    ]},
+    { cat: "مشروبات DRINKS", items: [
+        { n: "مشروب غازي", p: 2.5 }, { n: "عصير", p: 2 },
+        { n: "ماء كبير", p: 1 }, { n: "ماء صغير", p: 0.5 }
     ]}
 ];
 
 const container = document.getElementById('menu-cont');
-menu.forEach((c, cI) => {
+fullMenu.forEach((c, cI) => {
     let h = `<div class="cat-title">${c.cat}</div><div class="grid">`;
     c.items.forEach((it, iI) => {
-        const finalPrice = isDiscountActive ? it.dp : it.p;
-        h += `<div class="card ${isDiscountActive ? 'on-sale' : ''}">
+        // تطبيق خصم ريالين (إلا على المشروبات والماء)
+        let finalP = it.p;
+        if (isDiscount && it.p > 3) { finalP = it.p - 2; }
+        
+        h += `<div class="card ${isDiscount && it.p > 3 ? 'on-sale' : ''}">
             <img src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=200">
             <div class="details">
                 <h3>${it.n}</h3>
                 <div class="price-box">
-                    <span class="old-price" style="${isDiscountActive ? 'display:inline' : ''}">${it.p} ريال</span>
-                    <span class="current-price">${finalPrice} ريال</span>
+                    <span class="old-price" style="${isDiscount && it.p > 3 ? 'display:inline' : ''}">${it.p} ريال</span>
+                    <span class="current-price">${finalP} ريال</span>
                 </div>
             </div>
-            <div class="customize" id="opt-${cI}-${iI}">
+            ${c.cat !== 'مشروبات DRINKS' ? `<div class="customize" id="opt-${cI}-${iI}">
                 <div class="opt" onclick="this.classList.toggle('selected')">بدون مخلل</div>
+                <div class="opt" onclick="this.classList.toggle('selected')">بدون شطة</div>
                 <div class="opt" onclick="this.classList.toggle('selected')">سبايسي</div>
-            </div>
-            <button class="add-btn" onclick="add('${it.n}', ${finalPrice}, 'opt-${cI}-${iI}')">أضف +</button>
+            </div>` : ''}
+            <button class="add-btn" onclick="add('${it.n}', ${finalP}, 'opt-${cI}-${iI}')">أضف +</button>
         </div>`;
     });
     h += `</div>`;
@@ -135,7 +115,11 @@ menu.forEach((c, cI) => {
 
 function add(n, p, id) {
     let sOpts = [];
-    document.querySelectorAll(`#${id} .opt.selected`).forEach(o => sOpts.push(o.innerText));
+    let el = document.getElementById(id);
+    if(el) {
+        el.querySelectorAll('.opt.selected').forEach(o => sOpts.push(o.innerText));
+        el.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    }
     cart.push({ n, p, o: sOpts });
     document.getElementById('total').innerText = cart.reduce((s, i) => s + i.p, 0);
 }
