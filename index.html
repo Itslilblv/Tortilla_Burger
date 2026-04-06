@@ -15,7 +15,7 @@
         .cat-title { background: #f4f4f4; padding: 12px 20px; font-weight: 900; margin: 20px 0 10px; border-right: 6px solid var(--primary); font-size: 1.1rem; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 10px; }
         .card { background: white; border-radius: 15px; border: 1px solid #eee; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .card img { width: 100%; height: 100px; object-fit: cover; }
+        .card img { width: 100%; height: 110px; object-fit: cover; } /* تم تعديل الطول قليلاً */
         .details { padding: 10px; text-align: center; flex-grow: 1; }
         .details h3 { font-size: 0.85rem; margin: 5px 0; min-height: 35px; color: #444; }
         .price-box { margin: 8px 0; }
@@ -26,8 +26,6 @@
         .opt { font-size: 0.6rem; padding: 3px 6px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; background: #fafafa; }
         .opt.selected { background: var(--primary); border-color: var(--primary); font-weight: bold; }
         .add-btn { background: var(--secondary); color: white; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; }
-        
-        /* تصميم السلة الجديد */
         .footer { position: fixed; bottom: 0; width: 100%; background: white; border-top: 2px solid #eee; padding: 15px; box-sizing: border-box; z-index: 1000; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); }
         .cart-items-preview { max-height: 100px; overflow-y: auto; margin-bottom: 10px; font-size: 0.85rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px dashed #eee; }
@@ -37,7 +35,7 @@
 </head>
 <body>
 
-<div id="slow-day" class="banner">🔥عروض بداية الأسبوع الأحد والاثنين ✨</div>
+<div id="slow-day" class="banner">✨ عروض بداية الأسبوع الأحد والاثنين (خصم 2 ريال) ✨</div>
 
 <header>
     <div class="logo-text">TORTILLA <span>& BURGER</span></div>
@@ -62,30 +60,42 @@ if(day === 0 || day === 1) {
     document.getElementById('slow-day').style.display='block'; 
 }
 
+// المنيو الكامل مع روابط صور محسنة وجديدة
 const fullMenu = [
     { cat: "برجر BURGER", items: [
-        { n: "برجر دجاج عادي", p: 8 }, { n: "برجر دجاج دبل", p: 14 },
-        { n: "برجر لحم عادي", p: 8 }, { n: "برجر لحم دبل", p: 14 },
-        { n: "وجبة برجر صغير", p: 12 }, { n: "وجبة برجر كبير", p: 17 }
+        { n: "برجر دجاج عادي", p: 8, img: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=300" },
+        { n: "برجر دجاج دبل", p: 14, img: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=400" },
+        { n: "برجر لحم عادي", p: 8, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300" },
+        { n: "برجر لحم دبل", p: 14, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400" },
+        { n: "وجبة برجر صغير", p: 12, img: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=300" },
+        { n: "وجبة برجر كبير", p: 17, img: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400" }
     ]},
     { cat: "تورتيلا TORTILLA", items: [
-        { n: "تورتيلا أبيض صغير", p: 6 }, { n: "تورتيلا أبيض كبير", p: 8 },
-        { n: "تورتيلا أحمر صغير", p: 7 }, { n: "تورتيلا أحمر كبير", p: 10 }
+        { n: "تورتيلا أبيض صغير", p: 6, img: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=300" },
+        { n: "تورتيلا أبيض كبير", p: 8, img: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=400" },
+        { n: "تورتيلا أحمر صغير", p: 7, img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=300" }, // صورة تورتيلا حمراء
+        { n: "تورتيلا أحمر كبير", p: 10, img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400" }
     ]},
     { cat: "تورتيلا عربي MEALS", items: [
-        { n: "عربي أبيض", p: 18 }, { n: "عربي أحمر", p: 21 }
+        { n: "عربي أبيض", p: 18, img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300" },
+        { n: "عربي أحمر", p: 21, img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400" }
     ]},
     { cat: "باشكا BASHKA", items: [
-        { n: "جامبو موزاريلا", p: 8 }, { n: "باشكا دجاج", p: 15 }
+        { n: "جامبو موزاريلا", p: 8, img: "https://images.unsplash.com/photo-1539252554452-4411ba092fc5?w=300" },
+        { n: "باشكا دجاج", p: 15, img: "https://images.unsplash.com/photo-1539252554452-4411ba092fc5?w=400" }
     ]},
     { cat: "بطاطس FRIES", items: [
-        { n: "بطاطس بالجبن", p: 5 }, { n: "بطاطس وسط جبن", p: 7 },
-        { n: "بطاطس كبير جبن", p: 12 }, { n: "بطاطس دجاج (صغير)", p: 13 },
-        { n: "بطاطس دجاج (كبير)", p: 20 }
+        { n: "بطاطس بالجبن", p: 5, img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300" },
+        { n: "بطاطس وسط جبن", p: 7, img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400" },
+        { n: "بطاطس كبير جبن", p: 12, dp: 10, img: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=400" },
+        { n: "بطاطس دجاج (صغير)", p: 13, img: "https://images.unsplash.com/photo-1562608107-285600021644?w=300" },
+        { n: "بطاطس دجاج (كبير)", p: 20, img: "https://images.unsplash.com/photo-1562608107-285600021644?w=400" }
     ]},
     { cat: "مشروبات DRINKS", items: [
-        { n: "مشروب غازي", p: 2.5 }, { n: "عصير", p: 2 },
-        { n: "ماء كبير", p: 1 }, { n: "ماء صغير", p: 0.5 }
+        { n: "مشروب غازي", p: 2.5, img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
+        { n: "عصير", p: 2, img: "https://images.unsplash.com/photo-1613478223719-2ab80260f423?w=200" },
+        { n: "ماء كبير", p: 1, img: "https://images.unsplash.com/photo-1548839140-29a74ea07ad5?w=200" },
+        { n: "ماء صغير", p: 0.5, img: "https://images.unsplash.com/photo-1548839140-29a74ea07ad5?w=100" }
     ]}
 ];
 
@@ -97,8 +107,7 @@ fullMenu.forEach((c, cI) => {
         if (isDiscount && it.p > 3) { finalP = it.p - 2; }
         
         h += `<div class="card ${isDiscount && it.p > 3 ? 'on-sale' : ''}">
-            <img src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=200">
-            <div class="details">
+            <img src="${it.img}"> <div class="details">
                 <h3>${it.n}</h3>
                 <div class="price-box">
                     <span class="old-price" style="${isDiscount && it.p > 3 ? 'display:inline' : ''}">${it.p} ريال</span>
@@ -124,7 +133,6 @@ function add(name, price, id) {
         el.querySelectorAll('.opt.selected').forEach(o => selectedOpts.push(o.innerText));
         el.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
     }
-    // إضافة معرف فريد لكل صنف عشان نحذفه بسهولة
     const idItem = Date.now();
     cart.push({ idItem, name, price, opts: selectedOpts });
     renderCart();
@@ -158,8 +166,7 @@ function renderCart() {
 
 function sendToWA() {
     if(cart.length === 0) return alert("السلة فارغة!");
-    let tot = cart.reduce((s, i) => s + i.p, 0); // الخطأ هنا كان it.p وصححناه لـ i.price
-    tot = cart.reduce((s, i) => s + i.price, 0);
+    let tot = cart.reduce((s, i) => s + i.price, 0);
     let txt = `*طلب جديد (تورتيلا بحرة)*%0a%0a`;
     cart.forEach((i, idx) => {
         txt += `${idx+1}. ${i.name} (${i.price} ر.س)%0a`;
